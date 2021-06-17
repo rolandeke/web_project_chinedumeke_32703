@@ -1,0 +1,139 @@
+/* Add padding to containers */
+
+/* SAVE COLOR VARIABLES */
+:root {
+  --colorPrimary: #264653;
+  --colorPrimaryDark: #2a9d8f;
+  --colorDarkYellow: #e9c46a;
+  --colorLightOrange: #f4a261;
+  --colorDarkOrange: #e76f51;
+}
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  list-style-type: none;
+}
+
+.bg-light {
+  background-color: var(--colorPrimary) !important;
+}
+.navbar-brand {
+  color: var(--colorDarkOrange) !important;
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+.nav-item {
+  display: inline-block;
+  padding: 3px 5px;
+  transition: 0.3s ease-in;
+}
+.nav-item:hover {
+  background-color: var(--colorDarkYellow);
+}
+
+.nav-link {
+  color: var(--colorDarkOrange) !important;
+  font-size: 1rem;
+}
+.nav-link:hover {
+  color: var(--colorPrimary) !important;
+}
+
+.dropdown-menu {
+  min-width: 100%;
+  top: 100%;
+  font-size: 1.3rem;
+  background-clip: none;
+  color: var(--colorDarkOrange) !important;
+  border-radius: 0;
+  margin: 0;
+}
+/* login form styles */
+.login-form-header {
+  background-color: var(--colorPrimary);
+  color: #fff;
+  padding: 10px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+.register-link {
+  font-weight: bold;
+}
+
+.register-link a {
+  text-decoration: none;
+  color: var(--colorLightOrange);
+  text-transform: uppercase;
+  margin-left: 10px;
+  transition: 0.3s all;
+}
+
+.register-link a:hover {
+  text-decoration: none;
+  color: var(--colorDarkOrange);
+}
+
+.form-btn {
+  background-color: var(--colorPrimaryDark) !important;
+}
+/* End of login form styles */
+
+.margin-top-md-100 {
+  margin-top: 100px;
+}
+/* Full-width input fields */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+  border: none;
+  outline: none;
+}
+
+/* input[type="text"]:focus,
+input[type="password"]:focus {
+  background-color: #ddd;
+  outline: none;
+} */
+
+/* Overwrite default styles of hr */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+/* Set a style for the submit/register button */
+.RegisterButton {
+  background-color: #4caf50;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.RegisterButton:hover {
+  opacity: 1;
+}
+
+/* Add a blue text color to links */
+a {
+  color: dodgerblue;
+}
+
+/* Set a grey background color and center the text of the "sign in" section */
+.signin {
+  background-color: #f1f1f1;
+  text-align: center;
+}
