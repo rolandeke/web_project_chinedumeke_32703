@@ -1,29 +1,80 @@
 <?php
+//start a session for the current logged in user
 session_start();
+
+//require the database file
 require "config.php";
+
+//check if the user is logged and a session was created
 if (!isset($_SESSION['isUserLoggedIn'])) {
+
+    //redirect back to login page if the user tries to access the homepage from the url bar
     header("Location: index.php");
+
+    //exit the script
     exit;
-}
+} else {
 
-try {
+    try {
 
-    $user_id = $_SESSION["user_id"];
-    //retrieve data on page load
-    $sql = "SELECT * FROM tblmedicine WHERE UserId = :id";
+        //save user_id if the user is successfully logged in from the login form
+        $user_id = $_SESSION["user_id"];
 
-    $stmt = $connection->prepare($sql);
-    $stmt->bindParam(":id", $user_id, PDO::PARAM_INT);
+        //create variables for paginating data
 
-    if ($stmt->execute()) {
-        if ($stmt->rowCount() > 0) {
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        //set how many medicine you want to display per page on the table
+        $medicine_per_page = 4;
+
+        //retrieve all medicine data from the database when the page loads
+        $sql = "SELECT * FROM tblmedicine WHERE UserId = :id";
+        $stmt = $connection->prepare($sql);
+        $stmt->bindParam(":id", $user_id, PDO::PARAM_INT);
+
+        //check if the query executed successfully
+        if ($stmt->execute()) {
+
+            //check if the number of rows returned is greater than zero(0)
+            if ($stmt->rowCount() > 0) {
+
+                //store the total number of rows in a variable
+                $total_rows = $stmt->rowCount();
+
+                //determine the number of pages that would be displayed on the table
+                $number_of_pages = ceil($total_rows / $medicine_per_page);
+
+                //check the current pages the user is currently on
+                if (!isset($_GET["page"])) {
+                    $page = 1;
+                } else {
+                    $page = $_GET["page"];
+                }
+
+                //detemine the limit starting number for the result to the retrieved from the database table
+                $starting_limit = ($page - 1) * $medicine_per_page;
+
+                //retrieve data from the table based on the limit and display them to the user
+
+                $sql = "SELECT * FROM tblmedicine WHERE UserId = :id LIMIT " . $starting_limit . "," . $medicine_per_page;
+                $stmt = $connection->prepare($sql);
+                $stmt->bindParam(":id", $user_id, PDO::PARAM_INT);
+
+                //check again if the query was executed successfull
+                if ($stmt->execute()) {
+                    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                } else {
+                    //send an error to the user
+                }
+
+            }
+
+        } else {
+            //error executing the sql query
         }
-    } else {
-        //error executing the sql query
-    }
 
-} catch (Exception $ex) {
+    } catch (Exception $ex) {
+        echo $ex->getMessage();
+    }
 
 }
 
@@ -80,8 +131,8 @@ try {
 
 <body class="">
     <div class="container ">
-        <div class="row mt-5">
-            <div class="col-12 p-2 text-center my-4">
+        <div class="row mt-2">
+            <div class="col-12 p-2 text-center ">
                 <h1 class="display-4 text-uppercase">Welcome to online Medicine dosage tracker</h1>
             </div>
             <div class="col-md-4 ">
@@ -206,7 +257,7 @@ foreach ($rows as $row) {
                                         <td>' . $row["grams_unit"] . '</td>
                                         <td>' . $row["frequency_qty"] . '</td>
                                         <td>' . strtoupper($row["frequency_unit"]) . '</td>
-										<td><button class="btn btn-danger btn-block mb-2">Delete</button><button class="btn btn-info btn-block">Edit</button></td>
+										<td><button id="btnDelete" class="btn btn-danger btn-block mb-2">Delete</button><button class="btn btn-info btn-block">Edit</button></td>
                                     </tr>';
 }
 
@@ -215,7 +266,19 @@ foreach ($rows as $row) {
 
                                 </tbody>
                             </table>
+
                         </div>
+                        <!-- end of table -->
+                <nav aria-label="" class="mt-4">
+                <ul class="pagination">
+                        <?php
+for ($page = 1; $page <= $number_of_pages; $page++) {
+    echo '<li class="page-item"><a class="page-link" href="?page=' . $page . '">' . $page . '</a></li>';
+}
+
+?>
+                </ul>
+            </nav>
                     </div>
                 </div>
             </div>
