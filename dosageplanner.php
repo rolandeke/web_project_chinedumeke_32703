@@ -49,6 +49,6 @@ if (isset($_POST["medicine_id"]) && isset($_POST["date_taken"]) && isset($_POST[
     }
 
 } else {
-    echo json_encode("BAD REQUEST!!!! PLEASE SUBMI THE FORM AGAIN");
+    echo json_encode("BAD REQUEST!!!! PLEASE SUBMIT THE FORM AGAIN");
 
 }

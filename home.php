@@ -219,7 +219,10 @@ if (!empty($rows)) {
                                 <td>' . $row["grams_unit"] . '</td>
                                 <td>' . $row["frequency_qty"] . '</td>
                                 <td>' . strtoupper($row["frequency_unit"]) . '</td>
-                                <td><button id="btnDelete" class="btn btn-danger btn-block mb-2">Delete</button><button class="btn btn-info btn-block">Edit</button></td>
+                                <td>
+                                <button id="btnDeleteMedicine" data-id="' . $row["medicine_id"] . '" class="btn btn-danger btn-block mb-2">Delete</button>
+                                <button id="btnUpdateMedicine" data-id="' . $row["medicine_id"] . '" class="btn btn-info btn-block">Edit</button>
+                                </td>
                                 </tr>';
     }
 

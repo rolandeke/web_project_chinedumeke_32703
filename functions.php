@@ -109,6 +109,29 @@ function delete_user_dosage_plan($connection, $plan_id)
 
 }
 
+function delete_medicine_by_id($connection, $medicine_id)
+{
+    try {
+
+        $sql = "DELETE FROM tblmedicine WHERE medicine_id = :medicine_id";
+        $stmt = $connection->prepare($sql);
+        $stmt->bindParam(":medicine_id", $medicine_id, PDO::PARAM_INT);
+        if ($stmt->execute()) {
+
+            return true;
+
+        } else {
+            return false;
+        }
+
+    } catch (Exception $ex) {
+        throw $ex;
+    } finally {
+        $connection = null;
+    }
+
+}
+
 function get_plan_by_id($connection, $plan_id)
 {
 

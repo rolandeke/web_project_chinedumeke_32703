@@ -27,7 +27,7 @@ if (!isset($_SESSION['isUserLoggedIn'])) {
         //create variables for paginating data
 
         //set how many medicine you want to display per page on the table
-        $medicine_per_page = 4;
+        $medicine_per_page = 3;
         $number_of_pages = 0;
 
         //retrieve all medicine data from the database when the page loads
@@ -152,6 +152,7 @@ foreach ($meds as $row) {
                                         <input type="time" class="form-control" id="time_taken" name="time_taken">
                                     </div>
                                 </div>
+                                <input type="hidden" id="plan_id" name="plan_id">
                             </div>
                             <button type="submit" name="submit" id="btnSubmit" class="btn btn-primary btn-block">Save
                                 New Plan</button>
@@ -174,7 +175,7 @@ foreach ($meds as $row) {
                     <table class="table table-hover table-bordered">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
+
                                 <th scope="col">Medicine Name</th>
                                 <th scope="col">Date Taken</th>
                                 <th scope="col">Time Taken</th>
@@ -188,7 +189,7 @@ if (!empty($rows)) {
     foreach ($rows as $row) {
 
         echo '<tr>
-                                <th scope="row">' . $row["plan_id"] . '</th>
+
                                 <td>' . $row["medicine_name"] . '</td>
                                 <td>' . $row["date_taken"] . '</td>
                                 <td>' . $row["time_taken"] . '</td>
