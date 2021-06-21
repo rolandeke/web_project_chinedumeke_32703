@@ -4,7 +4,9 @@ $(document).ready(() => {
 
   let request;
   let isPlanUpdate = false;
+  let isMedicineUpdate = false;
   let dosagePlanID = 0;
+  let medicineId = 0;
 
   let btnDeleteDosagePlan = document.querySelectorAll("#btnDeleteDosagePlan");
   let btnUpdateDosagePlan = document.querySelectorAll("#btnUpdateDosagePlan");
@@ -140,7 +142,36 @@ $(document).ready(() => {
   btnUpdateMedicine.forEach((btn) => {
     btn.addEventListener("click", (e) => {
       let medicine_id = e.target.getAttribute("data-id");
-      alert(medicine_id);
+
+      isMedicineUpdate = true;
+      $.ajax({
+        url: "./update.php",
+        method: "GET",
+        data: { medicine_id: medicine_id, isMedicineUpdate },
+        success: (response) => {
+          const data = JSON.parse(response);
+          const {
+            medicine_id,
+            medicine_name,
+            dosage_qty,
+            dosage_unit,
+            grams,
+            frequency_qty,
+            frequency_unit,
+          } = data;
+
+          $("#medicine_name").val(medicine_name);
+          $("#dosage_qty").val(dosage_qty);
+          $("#dosage_unit").val(dosage_unit);
+          $("#milligrams").val(grams);
+          $("#frequency_qty").val(frequency_qty);
+          $("#frequency_unit").val(frequency_unit);
+          medicineId = medicine_id;
+        },
+        failure: (response) => {
+          console.log(response);
+        },
+      });
     });
   });
 
@@ -183,43 +214,89 @@ $(document).ready(() => {
         document.getElementById("error-div").innerHTML = html;
       });
     } else {
-      let $form = $(this);
+      // let $form = $(this);
+      // if (request) {
+      //   request.abort();
+      // }
 
-      if (request) {
-        request.abort();
-      }
+      let $inputs = $(this).find("input,select,button, textarea");
 
-      let $inputs = $form.find("input,select,button, textarea");
-
-      let serializedData = $form.serialize();
+      let serializedData = $(this).serialize();
 
       $inputs.prop("disabled", true);
 
-      request = $.ajax({
-        url: "../medicine.php",
-        type: "POST",
-        data: serializedData,
-      });
+      let medicine_name = $("#medicine_name").val();
+      let dosage_qty = $("#dosage_qty").val();
+      let dosage_unit = $("#dosage_unit").val();
+      let milligrams = $("#milligrams").val();
+      let frequency_qty = $("#frequency_qty").val();
+      let frequency_unit = $("#frequency_unit").val();
 
-      request.done(function (response) {
-        $form.trigger("reset");
-
-        swal(`${response}`, {
-          icon: "success",
-        }).then(() => {
-          location.assign("/home.php");
+      if (!isMedicineUpdate) {
+        $.ajax({
+          url: "../medicine.php",
+          type: "POST",
+          data: {
+            medicine_name,
+            dosage_qty,
+            dosage_unit,
+            milligrams,
+            frequency_qty,
+            frequency_unit,
+          },
+          success: (response) => {
+            $(this).trigger("reset");
+            swal(`${response}`, {
+              icon: "success",
+            }).then(() => {
+              location.assign("/home.php");
+            });
+          },
+          failure: (response) => {
+            console.log(response);
+          },
         });
-      });
+      } else {
+        $.ajax({
+          url: "../update.php",
+          type: "POST",
+          data: {
+            medicine_name,
+            dosage_qty,
+            dosage_unit,
+            milligrams,
+            frequency_qty,
+            frequency_unit,
+            isMedicineUpdate,
+            medicineId,
+          },
+          success: (response) => {
+            $(this).trigger("reset");
+            isMedicineUpdate = false;
+            medicineId = 0;
+            swal(`${response}`, {
+              icon: "success",
+            }).then(() => {
+              location.assign("/home.php");
+            });
+          },
+          failure: (response) => {
+            console.log(response);
+          },
+        });
+      }
 
-      request.fail(function (jqXHR, textStatus, errorThrown) {
-        // Log the error to the console
-        console.error(errorThrown);
-      });
+      // request.done(function (response) {});
 
-      request.always(function () {
-        // Reenable the inputs
-        $inputs.prop("disabled", false);
-      });
+      // request.fail(function (jqXHR, textStatus, errorThrown) {
+      //   // Log the error to the console
+      //   console.error(errorThrown);
+      // });
+
+      // request.always(function () {
+      //   // Reenable the inputs
+      //   $inputs.prop("disabled", false);
+      // });
     }
   });
 
@@ -358,8 +435,6 @@ $(document).ready(() => {
           plan_id,
           isPlanUpdate,
         };
-
-        //let serializedData = JSON.stringify(data);
 
         $inputs.prop("disabled", true);
 

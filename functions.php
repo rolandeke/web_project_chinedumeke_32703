@@ -155,3 +155,27 @@ function get_plan_by_id($connection, $plan_id)
     }
 
 }
+
+function get_medicine_by_id($connection, $medicine_id)
+{
+
+    try {
+
+        $sql = "SELECT * FROM tblmedicine WHERE medicine_id = :medicine_id";
+        $stmt = $connection->prepare($sql);
+        $stmt->bindParam(":medicine_id", $medicine_id, PDO::PARAM_INT);
+        if ($stmt->execute()) {
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+
+        } else {
+            return null;
+        }
+
+    } catch (Exception $ex) {
+        throw $ex;
+    } finally {
+        $connection = null;
+    }
+
+}

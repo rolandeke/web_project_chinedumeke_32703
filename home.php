@@ -176,8 +176,8 @@ if (!isset($_SESSION['isUserLoggedIn'])) {
                             </div>
                         </div>
 
-                        <button type="submit" name="submit" id="btnSubmit"
-                            class="btn btn-primary btn-block">Submit</button>
+                        <button type="submit" name="submit" id="btnSubmit" class="btn btn-info btn-block">Save New
+                            Medicine</button>
                     </form>
                 </div>
             </div>
@@ -186,7 +186,7 @@ if (!isset($_SESSION['isUserLoggedIn'])) {
         <div class="col-md-8">
             <div class="row">
                 <div class="col-12 p-2 my-2">
-                    <h4 class=" text-uppercase">View All Drugs</h4>
+                    <h4 class=" text-uppercase">Saved Medicine</h4>
                 </div>
 
                 <div class="col-12">
